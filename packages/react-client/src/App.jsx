@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, message } from "antd"
+import { Button, message, DatePicker } from "antd"
 import './App.css'
 
 class App extends React.Component {
@@ -15,7 +15,10 @@ class App extends React.Component {
 
   render () {
     return (
-      <Button type="primary" onClick={this.handleClick}>Primary Button</Button>
+        <div>
+          <DatePicker />
+          <Button type="primary" onClick={this.handleClick}>Primary Button</Button>
+        </div>
     )
   }
 }
