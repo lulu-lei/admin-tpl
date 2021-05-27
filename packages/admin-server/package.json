@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-jwt": "^4.0.1",
+    "koa-router": "^10.0.0",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2",
     "sequelize-auto": "^0.8.3"
