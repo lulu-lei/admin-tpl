@@ -29,8 +29,18 @@ const getUserList = async function () {
 	return await userSchema.findAndCount(); // findAndCount() 用 get 路由访问，会得到 204 状态：无数据返回。改用 post 就行
 }
 
+const registerUser = async function (name, password) {
+	const userInfo = await userSchema.create({
+		user_name: name,
+		password: password
+	});
+
+	return userInfo;
+}
+
 module.exports = {
 	getUserByName,
 	getUserById,
-	getUserList
+	getUserList,
+	registerUser
 }

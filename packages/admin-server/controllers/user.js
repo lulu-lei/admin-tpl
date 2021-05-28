@@ -1,11 +1,11 @@
 const userModel = require('../services/user.js');
-const jwt = require('koa-jwt');
+const koaJwt = require('koa-jwt');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const postUserAuth = async function (ctx) {
   const data = ctx.request.body; // 用 post 传过来的数据存放于 request.body
   const userInfo = await userModel.getUserByName(data.name);
-  console.log("userInfo-->", userInfo);
   if (userInfo != null) { // 如果查无此用户会返回 null
     if (userInfo.password !== data.password) {
       console.log("进入");
@@ -23,13 +23,14 @@ const postUserAuth = async function (ctx) {
       }
       const secret = 'vue-koa-demo'; // 指定密钥，这是之后用来判断 token 合法性的标志
       const token = jwt.sign(userToken, secret); // 签发 token
-      this.body = {
+      console.log("token", token);
+      ctx.response.body = {
         success: true,
         token: token
       }
     }
   } else {
-    this.body = {
+    ctx.response.body = {
       success: false,
       info: '用户不存在！'
     }
@@ -53,8 +54,20 @@ const getUserList = async function () {
   )
 }
 
+const registerUser = async function (ctx) {
+  const { name, password } = ctx.request.body;
+  const result = await userModel.registerUser(name, password);
+
+  ctx.response.body = {
+    success: true,
+    msg: '注册成功！',
+    data: result
+  }
+}
+
 module.exports = {
   postUserAuth,
   getUserInfo,
-  getUserList
+  getUserList,
+  registerUser
 }
