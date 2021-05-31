@@ -7,6 +7,3 @@ router.post('/user/list', userController.getUserList);
 router.post('/user/register', userController.registerUser);
 
 module.exports = router;
-
-
-
