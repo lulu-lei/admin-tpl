@@ -1,23 +1,43 @@
 .login-page {
-    height: 100%;
-    width: 100%;
-    background-image: url("../../../assets/images/bg.jpg") !important;
-    background-size: cover !important;
+	height: 100%;
+	width: 100%;
+	background-image: url("../../../assets/images/bg.jpeg") !important;
+	background-size: cover !important;
 
-    .login-header {
-        display: flex;
-        align-items: center;
+	.login-header {
+		display: flex;
+		align-items: center;
 
-        img {
-            height: 40px;
-            width: 40px;
-            margin-right: 30px;
-        }
+		img {
+			height: 40px;
+			width: 40px;
+			margin-right: 30px;
+		}
 
-        h2 {
-            color: #fff;
-            font-size: 24px;
-            margin-bottom: 0;
-        }
-    }
+		h2 {
+			color: #fff;
+			font-size: 24px;
+			margin-bottom: 0;
+		}
+	}
+
+	.login-content {
+		position: relative;
+
+		.login-form-containter {
+			position: absolute;
+			top: 30%;
+			right: 15%;
+
+			padding: 16px 32px;
+			
+			border-radius: 4px;
+			background-color: #fff;
+
+			h2 {
+				margin-bottom: 16px;
+				text-align: center;
+			}
+		}
+	}
 }

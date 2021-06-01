@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, message, DatePicker } from "antd"
 import './App.css';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Login from "./pages/login";
-import Admin from "./pages/admin";
+import Login from "@/pages/login";
+import Admin from "@/pages/admin";
 
 class App extends React.Component {
   constructor (props) {
