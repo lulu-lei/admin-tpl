@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const postUserAuth = async function (ctx) {
   const data = ctx.request.body; // 用 post 传过来的数据存放于 request.body
-  const userInfo = await userModel.getUserByName(data.name);
+  const userInfo = await userModel.getUserByName(data.username);
   if (userInfo != null) { // 如果查无此用户会返回 null
     if (userInfo.password !== data.password) {
       console.log("进入");
@@ -18,7 +18,7 @@ const postUserAuth = async function (ctx) {
     } else { // 密码正确
       const userToken = {
         id: userInfo.id,
-        name: userInfo.user_name,
+        username: userInfo.user_name,
         originExp: Date.now() + 60 * 60 * 1000, // 设置过期时间（毫秒）为 1 小时
       }
       const secret = 'vue-koa-demo'; // 指定密钥，这是之后用来判断 token 合法性的标志
@@ -43,15 +43,15 @@ const getUserInfo = async function () {
   this.body = result
 }
 
-const getUserList = async function () {
-  const result = await userModel.getUserList(
-    this.body = {
-      success: true,
-      total: result.count,
-      list: result.rows,
-      msg: '获取用户列表成功！'
-    }
-  )
+const getUserList = async function (ctx) {
+  const result = await userModel.getUserList();
+
+  ctx.response.body = {
+    success: true,
+    total: result.count,
+    list: result.rows,
+    msg: '获取用户列表成功！'
+  }
 }
 
 const registerUser = async function (ctx) {

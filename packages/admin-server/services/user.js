@@ -26,7 +26,7 @@ const getUserById = async function (id) {
 }
 
 const getUserList = async function () {
-	return await userSchema.findAndCount(); // findAndCount() 用 get 路由访问，会得到 204 状态：无数据返回。改用 post 就行
+	return await userSchema.findAndCountAll(); // findAndCount() 用 get 路由访问，会得到 204 状态：无数据返回。改用 post 就行
 }
 
 const registerUser = async function (name, password) {
