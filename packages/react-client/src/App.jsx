@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Button, message, DatePicker } from "antd"
-import './App.css';
+import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "@/pages/login";
 import Admin from "@/pages/admin";
@@ -14,8 +14,8 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Switch>{/* 只匹配其中一个 */}
-          <Route path='/login' component={Login}></Route>
-          <Route path='/' component={Admin}></Route>
+          <Route path="/login" component={Login}></Route>
+          <Route path="/" component={Admin}></Route>
         </Switch>
       </BrowserRouter>
     )
@@ -23,5 +23,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// https://blog.csdn.net/qq_35307549/article/details/116061370

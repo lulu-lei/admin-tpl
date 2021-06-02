@@ -1,26 +1,28 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
 // import { getThemeVariables } from "antd/dist/theme";
-import reactRefresh from '@vitejs/plugin-react-refresh'
-import vitePluginImp from 'vite-plugin-imp';
-import path from "path";
+import reactRefresh from "@vitejs/plugin-react-refresh";
+import vitePluginImp from "vite-plugin-imp";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // 配置路径的别名
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      // "components": path.resolve(__dirname, "src/components"),
-      // "styles": path.resolve(__dirname, "src/styles"),
-      // "plugins": path.resolve(__dirname, "src/plugins"),
-      // "views": path.resolve(__dirname, "src/views"),
-      // "layouts": path.resolve(__dirname, "src/layouts"),
-      // "utils": path.resolve(__dirname, "src/utils"),
-      // "apis": path.resolve(__dirname, "src/apis"),
-      // "dirs": path.resolve(__dirname, "src/directives"),
+      "@": resolve(__dirname, "src"),
+      "pages": resolve(__dirname, "src/pages")
     },
   },
+  // 自定义构建时Rollup选项
+  build: {
+    rollupOptions: {
+      input: {}
+    }
+  },
+  // 插件
   plugins: [
     reactRefresh(),
+    // 配置antd的按需引入
     vitePluginImp({
       libList: [
         {
@@ -30,14 +32,17 @@ export default defineConfig({
       ],
     })
   ],
+  // css的预处理
   css: {
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
         modifyVars: {
+          // 配置antd的暗黑主题
           // ...getThemeVariables({
           //   dark: true
           // }),
+          // 更改antd主题颜色
           ...{
             "primary-color": "#1DA57A",
             "link-color": "#1DA57A",
