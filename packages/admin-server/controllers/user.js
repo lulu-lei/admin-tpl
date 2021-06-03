@@ -1,19 +1,19 @@
 const userModel = require('../services/user.js');
+const { getClientIP } = require("../utils/ip.js");
 const koaJwt = require('koa-jwt');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
+const bcrypt = require("../utils/bcrypt.js");
 
 const postUserAuth = async function (ctx) {
   const data = ctx.request.body; // 用 post 传过来的数据存放于 request.body
   const userInfo = await userModel.getUserByName(data.username);
   if (userInfo != null) { // 如果查无此用户会返回 null
-    if (userInfo.password !== data.password) {
-      console.log("进入");
-      if (!bcrypt.compareSync(data.password, userInfo.password)) {
-        ctx.response.body = { // 返回给前端的数据
-          success: false,
-          info: '密码错误！'
-        }
+    const checkPassword = bcrypt.decrypt(data.password, userInfo.password);
+    if (!checkPassword) {
+      ctx.response.body = { // 返回给前端的数据
+        success: false,
+        info: '密码错误！'
       }
     } else { // 密码正确
       const userToken = {
@@ -23,7 +23,6 @@ const postUserAuth = async function (ctx) {
       }
       const secret = 'vue-koa-demo'; // 指定密钥，这是之后用来判断 token 合法性的标志
       const token = jwt.sign(userToken, secret); // 签发 token
-      console.log("token", token);
       ctx.response.body = {
         success: true,
         token: token
@@ -55,7 +54,8 @@ const getUserList = async function (ctx) {
 }
 
 const registerUser = async function (ctx) {
-  const { name, password } = ctx.request.body;
+  let { name, password } = ctx.request.body;
+  password = bcrypt.encrypt(password);
   const result = await userModel.registerUser(name, password);
 
   ctx.response.body = {

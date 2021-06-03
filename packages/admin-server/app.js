@@ -41,7 +41,7 @@ app.use((ctx, next) => {
 app.use(koajwt({
   secret: 'vue-koa-demo'
 }).unless({
-  path: [/^\/auth\/user$/]
+  path: [/^\/auth\/user$/, /^\/auth\/user\/register$/]
 }));
 // 2.绑定中间件
 // 
