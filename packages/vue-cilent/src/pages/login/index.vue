@@ -3,92 +3,80 @@
     <a-layout>
       <a-layout-header>Header</a-layout-header>
       <a-layout-content>
-        <a-form
-          id="formLogin"
-          class="user-layout-login"
-          ref="formLogin"
-          :form="form"
-          @submit="handleSubmit"
-        >
-          <a-alert
-            v-if="isLoginError"
-            type="error"
-            showIcon
-            style="margin-bottom: 24px;"
-            :message="$t('user.login.message-invalid-credentials')"
-          />
-          <a-form-item>
-            <a-input
-              size="large"
-              type="text"
-              :placeholder="$t('user.login.username.placeholder')"
-              v-decorator="[
-                'username',
-                { rules: [{ required: true, message: $t('user.userName.required') }, { validator: handleUsernameOrEmail }], validateTrigger: 'change' }
-              ]"
-            >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
-            </a-input>
+        <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
+          <a-form-item label="Activity name" v-bind="validateInfos.name">
+            <a-input v-model:value="modelRef.name" />
           </a-form-item>
-
-          <a-form-item>
-            <a-input-password
-              size="large"
-              :placeholder="$t('user.login.password.placeholder')"
-              v-decorator="[
-                'password',
-                { rules: [{ required: true, message: $t('user.password.required') }], validateTrigger: 'blur' }
-              ]"
-            >
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
-            </a-input-password>
+          <a-form-item label="Sub name" v-bind="validateInfos['sub.name']">
+            <a-input v-model:value="modelRef.sub.name" />
           </a-form-item>
-
-          <a-form-item>
-            <a-checkbox
-              v-decorator="['rememberMe', { valuePropName: 'checked' }]"
-            >{{ $t('user.login.remember-me') }}</a-checkbox>
-            <router-link
-              :to="{ name: 'recover', params: { user: 'aaa' } }"
-              class="forge-password"
-              style="float: right;"
-            >{{ $t('user.login.forgot-password') }}</router-link>
+          <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+            <a-button type="primary" @click.prevent="onSubmit">Create</a-button>
+            <a-button style="margin-left: 10px" @click="reset">Reset</a-button>
           </a-form-item>
-
-          <a-form-item style="margin-top:24px">
-            <a-button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              class="login-button"
-              :loading="state.loginBtn"
-              :disabled="state.loginBtn"
-            >{{ $t('user.login.login') }}</a-button>
-          </a-form-item>
-
-          <div class="user-login-other">
-            <span>{{ $t('user.login.sign-in-with') }}</span>
-            <a>
-              <a-icon class="item-icon" type="alipay-circle"></a-icon>
-            </a>
-            <a>
-              <a-icon class="item-icon" type="taobao-circle"></a-icon>
-            </a>
-            <a>
-              <a-icon class="item-icon" type="weibo-circle"></a-icon>
-            </a>
-            <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
-          </div>
         </a-form>
       </a-layout-content>
     </a-layout>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import { defineComponent, reactive, toRaw } from 'vue';
+import { useForm } from '@ant-design-vue/use';
+export default defineComponent({
+  setup() {
+    const modelRef = reactive({
+      name: '',
+      sub: {
+        name: '',
+      },
+    });
+    const { resetFields, validate, validateInfos } = useForm(
+      modelRef,
+      reactive({
+        name: [
+          {
+            required: true,
+            message: 'Please input name',
+          },
+        ],
+        'sub.name': [
+          {
+            required: true,
+            message: 'Please input sub name',
+          },
+        ],
+      }),
+    );
 
-const count = ref(0)
+    const onSubmit = () => {
+      validate()
+        .then(res => {
+          console.log(res, toRaw(modelRef));
+        })
+        .catch(err => {
+          console.log('error', err);
+        });
+    };
+
+    const reset = () => {
+      resetFields();
+    };
+
+    return {
+      labelCol: {
+        span: 4,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+      validateInfos,
+      reset,
+      modelRef,
+      onSubmit,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
